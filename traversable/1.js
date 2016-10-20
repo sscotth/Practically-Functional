@@ -11,6 +11,6 @@ const looksLikeEmail = x =>
   x.match(/@/ig) ? Right(x) : Left('not an email')
 
 const email = "blahh@yadda.com"
-const res = [greaterThan5, looksLikeEmail].map(v => v(email))
+const res = List.of(greaterThan5, looksLikeEmail).traverse(Either.of, v => v(email))
 console.log(res)
 

@@ -21,8 +21,9 @@ const send = (code, json) =>
   console.log(`sending ${code}: ${JSON.stringify(json)}`)
 
 Db.find(1)  // Task(Either(user || null))
-  .chain(eitherToTask) // Task(user || null)
-  .chain(u => Db.find(u.best_friend_id)) // Task(Either(user || null))
+  // .chain(eu => eu.map(u => Db.find(u.best_friend_id))) // Either(Task(Either(user || null))
+  .chain(eu => eu.traverse(Task.of, u => Db.find(u.best_friend_id))) // Task(Either(Either(user || null))
+  .chain(eeu => eeu.chain(x => x)) // Task(Either(user || null))
   .chain(eitherToTask) // Task(user || null)
   .fork(error => send(500, { error }), u => send(200, u))
   // downside: 404 vs 500 is gone
