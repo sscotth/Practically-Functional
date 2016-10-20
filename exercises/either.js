@@ -52,7 +52,7 @@ describe("Either Exercises", () => {
     if(address) {
       return address.street
     } else {
-      return 'no street'  
+      return 'no street'
     }
   }
 
@@ -99,7 +99,7 @@ describe("Either Exercises", () => {
   }
 
   it("Ex1: parseDbUrl", () => {
-    const config = '{"url": "postgres://sally:muppets@localhost:5432/mydb"}' 
+    const config = '{"url": "postgres://sally:muppets@localhost:5432/mydb"}'
     assert.equal(parseDbUrl(config)[1], "sally")
     assert.equal(parseDbUrl(), null)
   })
