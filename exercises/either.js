@@ -60,7 +60,7 @@ describe("Either Exercises", () => {
   it("Ex1: street", () => {
     const user = { address: { street: { name: "Willow" } } }
     assert.deepEqual(street(user), {name: "Willow"})
-    assert.equal(street({}), "no street")
+    assert.strictEqual(street({}), "no street")
   })
 
   // Ex1: Refactor streetName to use Either instead of nested if's
@@ -81,9 +81,9 @@ describe("Either Exercises", () => {
 
   it("Ex1: streetName", () => {
     const user = { address: { street: { name: "Willow" } } }
-    assert.equal(streetName(user), "Willow")
-    assert.equal(streetName({}), "no street")
-    assert.equal(streetName({ address: { street: null } }), "no street")
+    assert.strictEqual(streetName(user), "Willow")
+    assert.strictEqual(streetName({}), "no street")
+    assert.strictEqual(streetName({ address: { street: null } }), "no street")
   })
 
 
@@ -124,8 +124,8 @@ describe("Either Exercises", () => {
 
   it("Ex3: startApp", () => {
     const config = '{"url": "postgres://sally:muppets@localhost:5432/mydb"}'
-    assert.equal(String(startApp(config)), "starting mydb, sally, muppets")
-    assert.equal(String(startApp()), "can't get config")
+    assert.strictEqual(startApp(config), "starting mydb, sally, muppets")
+    assert.strictEqual(startApp(), "can't get config")
   })
 
 })
