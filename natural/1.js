@@ -20,10 +20,9 @@ const Db = ({
 const send = (code, json) =>
   console.log(`sending ${code}: ${JSON.stringify(json)}`)
 
-Db.find(1)
-.chain(eu =>
-  eu.fold(e => Task.of(eu),
-          u => Db.find(u.best_friend_id)))
-.fork(error => send(500, {error}),
-      eu => eu.fold(error => send(404, {error}),
-                    x => send(200, x)))
+Db.find(1)  // Task(Either(user || null))
+  .chain(eitherToTask) // Task(user || null)
+  .chain(u => Db.find(u.best_friend_id)) // Task(Either(user || null))
+  .chain(eitherToTask) // Task(user || null)
+  .fork(error => send(500, { error }), u => send(200, u))
+  // downside: 404 vs 500 is gone
