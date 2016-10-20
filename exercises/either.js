@@ -65,19 +65,11 @@ describe("Either Exercises", () => {
 
   // Ex1: Refactor streetName to use Either instead of nested if's
   // =========================
-  const streetName = user => {
-    const address = user.address
-
-    if(address) {
-      const street = address.street
-
-      if(street) {
-        return street.name
-      }
-    }
-
-    return 'no street'
-  }
+  const streetName = user =>
+    fromNullable(user.address)
+      .map(address => address.street)
+      .chain(fromNullable)
+      .fold(() => 'no street', street => street.name)
 
   it("Ex1: streetName", () => {
     const user = { address: { street: { name: "Willow" } } }
@@ -89,14 +81,15 @@ describe("Either Exercises", () => {
 
   // Ex2: Refactor parseDbUrl to return an Either instead of try/catch
   // =========================
-  const parseDbUrl = cfg => {
-    try {
-      const c = JSON.parse(cfg) // throws if it can't parse
-      return c.url.match(DB_REGEX)
-    } catch(e) {
-       return null
-    }
-  }
+  const parseDbUrl = cfg =>
+    tryCatch(() => JSON.parse(cfg))
+      .fold(() => null, c => c.url.match(DB_REGEX))
+
+  // const parseDbUrl = cfg =>
+  //   tryCatch(() => JSON.parse(cfg))
+  //     .map(c => c.url)
+  //     .map(url => url.match(DB_REGEX))
+  //     .fold(() => null, x => x)
 
   it("Ex1: parseDbUrl", () => {
     const config = '{"url": "postgres://sally:muppets@localhost:5432/mydb"}'
@@ -108,19 +101,16 @@ describe("Either Exercises", () => {
 
   // Ex3: Using Either and the functions above, refactor startApp
   // =========================
-  const startApp = cfg => {
-    const parsed = parseDbUrl(cfg)
+  const startApp = cfg =>
+    fromNullable(parseDbUrl(cfg))
+      .fold(() => "can't get config",
+        ([_, user, password, db]) => `starting ${db}, ${user}, ${password}`
+      )
 
-    if(parsed) {
-      const [_, user, password, db] = parsed
-      return `starting ${db}, ${user}, ${password}`
-    } else {
-      return "can't get config"
-    }
-  }
-
-
-
+  // const startApp = cfg =>
+  //   fromNullable(parseDbUrl(cfg))
+  //     .map(([_, user, password, db]) => `starting ${db}, ${user}, ${password}`)
+  //     .fold(() => "can't get config", x => x)
 
   it("Ex3: startApp", () => {
     const config = '{"url": "postgres://sally:muppets@localhost:5432/mydb"}'
