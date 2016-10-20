@@ -23,7 +23,7 @@ describe("Box Exercises", () => {
 
 
   it('ex1', () => {
-    assert.equal(String(moneyToFloat('$5.00')), 5)
+    assert.strictEqual(moneyToFloat('$5.00'), 5)
   })
 
 
@@ -39,7 +39,7 @@ describe("Box Exercises", () => {
 
 
   it('ex2', () => {
-    assert.equal(String(percentToFloat('20%')), 0.2)
+    assert.strictEqual(percentToFloat('20%'), 0.2)
   })
 
 
@@ -56,6 +56,6 @@ describe("Box Exercises", () => {
 
 
   it('ex3', () => {
-    assert.equal(String(applyDiscount('$5.00', '20%')), 4)
+    assert.strictEqual(applyDiscount('$5.00', '20%'), 4)
   })
 })
