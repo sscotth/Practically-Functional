@@ -33,7 +33,8 @@ describe("Task Exercises", () => {
   // =========================
   const postTitle = id =>
     getPost(id) // Task(post)
-
+      .map(p => p.title)
+      .map(t => t.toUpperCase())
 
   it("Ex1: postTitle", (done) => {
     postTitle(1)
@@ -48,7 +49,10 @@ describe("Task Exercises", () => {
   // =========================
   const commentsForPost = id =>
     getPost(id)
-
+      .chain(post =>
+        getComments(post)
+          .map(comments => Object.assign({}, post, {comments}))
+      )
 
   it("Ex2: commentsForPost", (done) => {
     commentsForPost(2)
@@ -62,9 +66,8 @@ describe("Task Exercises", () => {
 
   // Ex3: Wrap __dirname in a Task to make it "pure"
   // =========================
-  const getDirname =
-    __dirname // wrap me in Task
-
+  const getDirname = new Task((rej, res) => res(__dirname)) // lazily executed
+  // const getDirname = Task.of(__dirname) // similar, but immediately executed
 
   it("Ex3: getHref", (done) => {
     getDirname
