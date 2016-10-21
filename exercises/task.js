@@ -53,6 +53,7 @@ describe("Task Exercises", () => {
         getComments(post)
           .map(comments => Object.assign({}, post, {comments}))
       )
+    // Either.of(id => post => comments => Object.assign({}, post, {comments})).ap(getPost(id)).ap(getComments(post)) ?
 
   it("Ex2: commentsForPost", (done) => {
     commentsForPost(2)
@@ -77,4 +78,3 @@ describe("Task Exercises", () => {
     })
   })
 })
-

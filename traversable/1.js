@@ -13,4 +13,3 @@ const looksLikeEmail = x =>
 const email = "blahh@yadda.com"
 const res = List.of(greaterThan5, looksLikeEmail).traverse(Either.of, v => v(email))
 console.log(res)
-
